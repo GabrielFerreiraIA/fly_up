@@ -1,0 +1,308 @@
+{
+  "name": "FlyUp — Lead Capture Pipeline v3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "flyup-lead",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          }
+        }
+      },
+      "id": "node-webhook",
+      "name": "🔔 Webhook - Receber Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-900, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "nome",
+              "value": "={{ ($json.nome ?? '').toString().trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "telefone",
+              "value": "={{ ($json.telefone ?? '').toString().replace(/\\D/g, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "telefone_br",
+              "value": "={{ '55' + ($json.telefone ?? '').toString().replace(/\\D/g, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "a4",
+              "name": "experience_id",
+              "value": "={{ ($json.experiencia ?? $json.experience_id ?? '').toString() }}",
+              "type": "string"
+            },
+            {
+              "id": "a5",
+              "name": "fonte",
+              "value": "={{ ($json.fonte ?? 'desconhecido').toString() }}",
+              "type": "string"
+            },
+            {
+              "id": "a6",
+              "name": "fonte_label",
+              "value": "={{ ($json.fonte_label ?? $json.fonte ?? 'Origem não identificada').toString() }}",
+              "type": "string"
+            },
+            {
+              "id": "a7",
+              "name": "email",
+              "value": "={{ ($json.email ?? '').toString() }}",
+              "type": "string"
+            },
+            {
+              "id": "a8",
+              "name": "data_hora",
+              "value": "={{ $now.setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy HH:mm') }}",
+              "type": "string"
+            },
+            {
+              "id": "a9",
+              "name": "webhook_payload",
+              "value": "={{ JSON.stringify($json) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-normalize",
+      "name": "🔧 Normalizar Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "check-exp",
+              "leftValue": "={{ $json.experience_id }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "node-check-experience",
+      "name": "🔍 Tem experiência?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-460, 300]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "experiences",
+        "limit": 1,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.experience_id }}"
+            }
+          ]
+        }
+      },
+      "id": "node-get-experience",
+      "name": "💰 Buscar Experiência e Valor",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [-220, 160],
+      "credentials": {
+        "supabaseApi": {
+          "id": "qHqyjf3FCXppBUc8",
+          "name": "Supabase Flyup"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "def1",
+              "name": "nome",
+              "value": "Experiência FlyUp",
+              "type": "string"
+            },
+            {
+              "id": "def2",
+              "name": "valor_medio",
+              "value": 0,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "node-default-experience",
+      "name": "📋 Default Sem Experiência",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-220, 440]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "b1",  "name": "nome",           "value": "={{ $('🔧 Normalizar Dados').item.json.nome }}", "type": "string" },
+            { "id": "b2",  "name": "telefone",        "value": "={{ $('🔧 Normalizar Dados').item.json.telefone }}", "type": "string" },
+            { "id": "b3",  "name": "telefone_br",     "value": "={{ $('🔧 Normalizar Dados').item.json.telefone_br }}", "type": "string" },
+            { "id": "b4",  "name": "experience_id",   "value": "={{ $('🔧 Normalizar Dados').item.json.experience_id }}", "type": "string" },
+            { "id": "b5",  "name": "experience_nome", "value": "={{ $json.nome ?? 'Experiência FlyUp' }}", "type": "string" },
+            { "id": "b6",  "name": "valor_medio",     "value": "={{ $json.valor_medio ?? 0 }}", "type": "number" },
+            { "id": "b7",  "name": "fonte",           "value": "={{ $('🔧 Normalizar Dados').item.json.fonte }}", "type": "string" },
+            { "id": "b8",  "name": "fonte_label",     "value": "={{ $('🔧 Normalizar Dados').item.json.fonte_label }}", "type": "string" },
+            { "id": "b9",  "name": "email",           "value": "={{ $('🔧 Normalizar Dados').item.json.email }}", "type": "string" },
+            { "id": "b10", "name": "data_hora",       "value": "={{ $('🔧 Normalizar Dados').item.json.data_hora }}", "type": "string" },
+            { "id": "b11", "name": "webhook_payload", "value": "={{ $('🔧 Normalizar Dados').item.json.webhook_payload }}", "type": "string" },
+            {
+              "id": "b12",
+              "name": "valor_formatado",
+              "value": "={{ $json.valor_medio > 0 ? 'R$ ' + Number($json.valor_medio).toLocaleString('pt-BR', {minimumFractionDigits: 2}) : 'A consultar' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-build-final",
+      "name": "📦 Montar Dados Finais",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [60, 300]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send-text",
+        "instanceName": "={{ $vars.EVOLUTION_INSTANCE }}",
+        "remoteJid": "={{ $json.telefone_br }}",
+        "messageText": "={{ '🪂 Olá, ' + $json.nome + '!\\n\\nRecebemos seu interesse em *' + $json.experience_nome + '*! 🎉\\n\\nEm breve um de nossos consultores entrará em contato para agendar sua experiência.\\n\\nQualquer dúvida, pode falar diretamente aqui no WhatsApp!\\n\\n✈️ — Equipe FlyUp' }}",
+        "options": {}
+      },
+      "id": "node-wa-lead",
+      "name": "💬 WA → Confirmar Lead",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [300, 140],
+      "credentials": {
+        "evolutionApi": {
+          "id": "evolution-flyup",
+          "name": "Evolution API FlyUp"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "send-text",
+        "instanceName": "={{ $vars.EVOLUTION_INSTANCE }}",
+        "remoteJid": "120363423484933197@g.us",
+        "messageText": "={{ '🆙 *Novo Potencial Comprador* 🆙\\n\\n👤 *Nome*: ' + $json.nome + '\\n📱 *Telefone*: ' + $json.telefone.replace(/(\\d{2})(\\d{4,5})(\\d{4})/, '($1) $2-$3') + '\\n🪂 *Experiência*: ' + $json.experience_nome + '\\n🔗 *Fonte*: ' + $json.fonte_label + '\\n💰 *Valor Estimado*: ' + $json.valor_formatado + '\\n📅 *Data/Hora*: ' + $json.data_hora + '\\n\\n💬 _Lead já recebeu confirmação no WhatsApp_ ✓' }}",
+        "options": {}
+      },
+      "id": "node-wa-grupo",
+      "name": "👥 WA → Notificar Grupo",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [300, 300],
+      "credentials": {
+        "evolutionApi": {
+          "id": "evolution-flyup",
+          "name": "Evolution API FlyUp"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "tableId": "leads",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            { "fieldId": "nome",             "fieldValue": "={{ $json.nome }}" },
+            { "fieldId": "telefone",         "fieldValue": "={{ $json.telefone }}" },
+            { "fieldId": "email",            "fieldValue": "={{ $json.email || null }}" },
+            { "fieldId": "experience_id",    "fieldValue": "={{ $json.experience_id || null }}" },
+            { "fieldId": "fonte",            "fieldValue": "={{ $json.fonte }}" },
+            { "fieldId": "fonte_label",      "fieldValue": "={{ $json.fonte_label }}" },
+            { "fieldId": "wa_lead_enviado",  "fieldValue": true },
+            { "fieldId": "wa_grupo_enviado", "fieldValue": true },
+            { "fieldId": "webhook_payload",  "fieldValue": "={{ $json.webhook_payload }}" }
+          ]
+        }
+      },
+      "id": "node-supabase-insert",
+      "name": "🗄️ Supabase → Inserir Lead",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [300, 460],
+      "credentials": {
+        "supabaseApi": {
+          "id": "qHqyjf3FCXppBUc8",
+          "name": "Supabase Flyup"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "🔔 Webhook - Receber Lead": {
+      "main": [[{ "node": "🔧 Normalizar Dados", "type": "main", "index": 0 }]]
+    },
+    "🔧 Normalizar Dados": {
+      "main": [[{ "node": "🔍 Tem experiência?", "type": "main", "index": 0 }]]
+    },
+    "🔍 Tem experiência?": {
+      "main": [
+        [{ "node": "💰 Buscar Experiência e Valor", "type": "main", "index": 0 }],
+        [{ "node": "📋 Default Sem Experiência",    "type": "main", "index": 0 }]
+      ]
+    },
+    "💰 Buscar Experiência e Valor": {
+      "main": [[{ "node": "📦 Montar Dados Finais", "type": "main", "index": 0 }]]
+    },
+    "📋 Default Sem Experiência": {
+      "main": [[{ "node": "📦 Montar Dados Finais", "type": "main", "index": 0 }]]
+    },
+    "📦 Montar Dados Finais": {
+      "main": [
+        [
+          { "node": "💬 WA → Confirmar Lead",     "type": "main", "index": 0 },
+          { "node": "👥 WA → Notificar Grupo",    "type": "main", "index": 0 },
+          { "node": "🗄️ Supabase → Inserir Lead", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "errorWorkflow": ""
+  },
+  "tags": [{ "name": "flyup" }, { "name": "crm" }, { "name": "leads" }]
+}

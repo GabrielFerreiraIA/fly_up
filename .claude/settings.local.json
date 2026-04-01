@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:ncnodes.com)",
+      "WebFetch(domain:deepwiki.com)",
+      "WebFetch(domain:community.n8n.io)",
+      "WebFetch(domain:github.com)",
+      "Bash(printenv)",
+      "Bash(curl -sv --connect-timeout 3 http://localhost:5678/api/v1/workflows)",
+      "Bash(# Check if there''s N8N cloud URL or any other N8N-related config grep -r \"\"n8n\"\" \"\"C:/Users/gabri/.gemini/antigravity/scratch/FLYUP FINAL\"\" --include=\"\"*.env*\"\" --include=\"\"*.json\"\" --include=\"\"*.yaml\"\" --include=\"\"*.yml\"\" --include=\"\"*.md\"\" -l)"
+    ]
+  }
+}

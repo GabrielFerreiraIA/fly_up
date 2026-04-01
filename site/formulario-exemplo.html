@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>FlyUp — Exemplo de Formulário</title>
+</head>
+<body>
+
+<!--
+  EXEMPLO: Formulário da Página Salto Duplo
+  Copie este padrão para cada página, alterando apenas:
+    - data-fonte → ID da fonte (veja data/site-mapping.md)
+    - data-experiencia → ID da experiência
+-->
+
+<form
+  id="form-interesse"
+  data-fonte="botao-agendar-salto-duplo"
+  data-experiencia="salto-duplo"
+>
+  <input type="text"  name="nome"     placeholder="Seu nome completo" required />
+  <input type="tel"   name="telefone" placeholder="(11) 99999-9999"   required />
+  <input type="email" name="email"    placeholder="seu@email.com"      />
+  <button type="submit">Quero Agendar!</button>
+  <p id="form-status"></p>
+</form>
+
+<script type="module">
+  import { FlyUpWebhook } from './webhook-integration.js'
+
+  document.getElementById('form-interesse').addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const form = e.target
+    const status = document.getElementById('form-status')
+
+    const fonte       = form.dataset.fonte
+    const experiencia = form.dataset.experiencia
+
+    status.textContent = 'Enviando...'
+
+    const result = await FlyUpWebhook.send(
+      {
+        nome:     form.nome.value,
+        telefone: form.telefone.value,
+        email:    form.email.value,
+      },
+      fonte,
+      experiencia
+    )
+
+    if (result.ok) {
+      status.textContent = '✅ Recebemos seu interesse! Em breve entraremos em contato.'
+      form.reset()
+    } else {
+      status.textContent = '❌ Erro ao enviar. Tente pelo WhatsApp.'
+      console.error('Webhook error:', result.error)
+    }
+  })
+</script>
+
+</body>
+</html>
