@@ -235,7 +235,7 @@ export async function getLeadsByExperience(): Promise<
 
   const grouped = (data ?? []).reduce(
     (acc, lead) => {
-      const nome = (lead.experiences as { nome: string } | null)?.nome ?? 'Sem experiência'
+      const nome = (lead.experiences as unknown as { nome: string } | null)?.nome ?? 'Sem experiência'
       if (!acc[nome]) acc[nome] = { experience_nome: nome, total: 0, valor_total: 0 }
       acc[nome].total++
       acc[nome].valor_total += lead.valor_estimado ?? 0

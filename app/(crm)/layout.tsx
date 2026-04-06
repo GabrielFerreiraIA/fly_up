@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { href: '/leads',     label: 'Todos os Leads', emoji: '👥' },
   { href: '/config/experiences', label: 'Experiências', emoji: '🪂' },
   { href: '/config/tags',        label: 'Etiquetas',    emoji: '🏷️' },
-]
+] as const
 
 export default async function CRMLayout({
   children,
