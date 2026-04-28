@@ -7,6 +7,21 @@ import {
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
+// Tick customizado para permitir textTransform (não suportado como prop SVG direta)
+function UppercaseTick({ x, y, payload }: { x?: number; y?: number; payload?: { value: string } }) {
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={4}
+      textAnchor="end"
+      style={{ fill: '#71717a', fontSize: 10, fontWeight: 700, textTransform: 'uppercase' }}
+    >
+      {payload?.value}
+    </text>
+  )
+}
+
 interface DashboardChartsProps {
   byExperience: { experience_nome: string; total: number; valor_total: number }[]
   byFonte: { fonte_label: string; total: number }[]
@@ -32,7 +47,7 @@ export function DashboardCharts({ byExperience, byFonte, byDay }: DashboardChart
             <YAxis
               type="category"
               dataKey="experience_nome"
-              tick={{ fill: '#71717a', fontSize: 10, fontWeight: 700, textTransform: 'uppercase' }}
+              tick={<UppercaseTick />}
               width={130}
             />
             <Tooltip
