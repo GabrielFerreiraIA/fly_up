@@ -24,16 +24,16 @@ export default async function CRMLayout({
   }
 
   return (
-    <div className="flex h-screen bg-sky-900 overflow-hidden">
+    <div className="flex h-screen bg-background overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-60 flex-shrink-0 bg-sky-900 border-r border-sky-800 flex flex-col">
+      <aside className="w-60 flex-shrink-0 bg-background border-r border-white/10 flex flex-col">
         {/* Logo */}
-        <div className="px-6 py-5 border-b border-sky-800">
+        <div className="px-6 py-5 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">🪂</span>
+            <img src="https://i.imgur.com/UlfCRZF.png" alt="Fly Up Logo" className="w-10 h-auto object-contain" />
             <div>
-              <h1 className="font-bold text-neutral-100 leading-tight">FlyUp CRM</h1>
-              <p className="text-xs text-sky-500">Lead Management</p>
+              <h1 className="font-black text-white leading-tight uppercase italic tracking-wider">FlyUp CRM</h1>
+              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Lead Management</p>
             </div>
           </div>
         </div>
@@ -44,23 +44,23 @@ export default async function CRMLayout({
             <Link
               key={item.href}
               href={item.href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-sky-300
-                         hover:bg-sky-800 hover:text-neutral-100 transition-colors group"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-zinc-400
+                         hover:bg-white/5 hover:text-neon transition-colors group relative overflow-hidden border border-transparent hover:border-white/10"
             >
-              <span className="text-base">{item.emoji}</span>
-              <span>{item.label}</span>
+              <span className="text-base group-hover:scale-110 transition-transform duration-300">{item.emoji}</span>
+              <span className="uppercase tracking-wider">{item.label}</span>
             </Link>
           ))}
         </nav>
 
         {/* User info + logout */}
-        <div className="px-3 py-4 border-t border-sky-800">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-sky-800/50 mb-2">
-            <div className="w-7 h-7 rounded-full bg-accent-primary/20 flex items-center justify-center text-xs text-accent-primary font-bold">
+        <div className="px-3 py-4 border-t border-white/10">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 mb-2 border border-white/5">
+            <div className="w-7 h-7 rounded-full bg-neon/20 flex items-center justify-center text-xs text-neon font-black border border-neon/30 shadow-[0_0_10px_rgba(57,255,20,0.2)]">
               {user.email?.[0]?.toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-neutral-100 truncate">{user.email}</p>
+              <p className="text-xs font-bold text-zinc-300 truncate uppercase tracking-wider">{user.email?.split('@')[0]}</p>
             </div>
           </div>
           <SidebarLogout />
@@ -68,7 +68,7 @@ export default async function CRMLayout({
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-auto bg-sky-900">
+      <main className="flex-1 overflow-auto bg-surface">
         {children}
       </main>
     </div>

@@ -90,17 +90,15 @@ export interface DashboardMetrics {
   total_perdidos: number
 }
 
-// Payload que o site envia via webhook
 export interface WebhookPayload {
   nome: string
   telefone: string
   email?: string
-  experiencia: string      // ID da experience
-  fonte: string            // identificador do botão
-  fonte_label: string      // label legível
+  experiencia: string
+  fonte: string
+  fonte_label: string
 }
 
-// Status label map
 export const STATUS_LABELS: Record<LeadStatus, string> = {
   novo:         'Novo',
   a_contactar:  'A Contactar',
@@ -110,7 +108,7 @@ export const STATUS_LABELS: Record<LeadStatus, string> = {
 }
 
 export const STATUS_COLORS: Record<LeadStatus, string> = {
-  novo:         'bg-accent-primary/20 text-accent-primary',
+  novo:         'bg-crm-accent/20 text-crm-accent',
   a_contactar:  'bg-yellow-500/20 text-yellow-400',
   qualificado:  'bg-blue-500/20 text-blue-400',
   convertido:   'bg-green-500/20 text-green-400',

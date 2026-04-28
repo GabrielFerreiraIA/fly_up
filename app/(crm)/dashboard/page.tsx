@@ -4,7 +4,7 @@ import {
   getLeadsByFonte,
   getLeadsByDay,
 } from '@/lib/supabase/queries'
-import { DashboardMetric } from '@/components/dashboard-metric'
+import { DashboardMetric } from '@/components/crm/dashboard-metric'
 import { formatCurrency } from '@/lib/utils/date'
 import { DashboardCharts } from './_components/dashboard-charts'
 
@@ -21,8 +21,8 @@ export default async function DashboardPage() {
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-neutral-100">Dashboard</h1>
-        <p className="text-sky-400 text-sm mt-1">Visão geral dos leads e conversões</p>
+        <h1 className="text-3xl font-black text-white tracking-widest uppercase italic">Dashboard</h1>
+        <p className="text-zinc-400 font-medium uppercase tracking-wider text-[10px] mt-1">Visão geral dos leads e conversões</p>
       </div>
 
       {/* Métricas principais */}
@@ -54,17 +54,17 @@ export default async function DashboardPage() {
       </div>
 
       {/* Funil do pipeline */}
-      <div className="bg-sky-800 border border-sky-700 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-sky-400 uppercase tracking-wider mb-4">
+      <div className="bg-surface border border-white/10 rounded-2xl p-6 hover:border-neon/30 transition-all duration-300 shadow-xl">
+        <h2 className="text-xs font-black text-neon uppercase tracking-[0.2em] mb-6">
           Funil do Pipeline
         </h2>
-        <div className="flex items-end gap-3">
+        <div className="flex items-end gap-4 h-40">
           {[
-            { label: '🆕 Novos',      value: metrics.total_novos,         color: '#00B4D8' },
-            { label: '📞 A Contactar',value: metrics.total_a_contactar,   color: '#EAB308' },
-            { label: '✅ Qualif.',    value: metrics.total_qualificados,  color: '#3B82F6' },
-            { label: '🏆 Convertidos',value: metrics.total_convertidos,   color: '#22C55E' },
-            { label: '❌ Perdidos',   value: metrics.total_perdidos,       color: '#EF4444' },
+            { label: '🆕 Novos',       value: metrics.total_novos,        color: '#39FF14' },
+            { label: '📞 A Contactar', value: metrics.total_a_contactar,  color: '#EAB308' },
+            { label: '✅ Qualif.',     value: metrics.total_qualificados, color: '#00FFFF' },
+            { label: '🏆 Convertidos', value: metrics.total_convertidos,  color: '#39FF14' },
+            { label: '❌ Perdidos',    value: metrics.total_perdidos,     color: '#EF4444' },
           ].map((item) => {
             const max = Math.max(
               metrics.total_novos, metrics.total_a_contactar,
@@ -72,13 +72,13 @@ export default async function DashboardPage() {
             )
             const height = Math.max((item.value / max) * 120, 8)
             return (
-              <div key={item.label} className="flex-1 flex flex-col items-center gap-2">
-                <span className="text-sm font-bold text-neutral-100">{item.value}</span>
+              <div key={item.label} className="flex-1 flex flex-col items-center gap-3 group relative">
+                <span className="text-sm font-black text-white">{item.value}</span>
                 <div
-                  className="w-full rounded-t-lg transition-all duration-500"
-                  style={{ height: `${height}px`, backgroundColor: `${item.color}40`, border: `1px solid ${item.color}60` }}
+                  className="w-full rounded-t-xl transition-all duration-700 ease-out group-hover:shadow-[0_0_15px_currentColor]"
+                  style={{ height: `${height}px`, backgroundColor: `${item.color}20`, borderTop: `2px solid ${item.color}`, color: item.color }}
                 />
-                <span className="text-xs text-sky-400 text-center whitespace-nowrap">{item.label}</span>
+                <span className="text-[10px] font-bold text-zinc-400 text-center whitespace-nowrap uppercase tracking-wider">{item.label}</span>
               </div>
             )
           })}

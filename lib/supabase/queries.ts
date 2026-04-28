@@ -104,6 +104,34 @@ export async function softDeleteLead(id: string): Promise<void> {
   if (error) throw error
 }
 
+export async function createLead(leadData: Partial<Lead>): Promise<Lead> {
+  const supabase = createClient()
+  
+  // Assegurando valores padrões mínimos para a base de dados
+  const payload = {
+    nome: leadData.nome,
+    telefone: leadData.telefone,
+    telefone_normalizado: leadData.telefone_normalizado || leadData.telefone?.replace(/\D/g, ''),
+    email: leadData.email || null,
+    experience_id: leadData.experience_id || null,
+    fonte: leadData.fonte || 'manual',
+    fonte_label: leadData.fonte_label || 'Adicionado Manualmente',
+    status: leadData.status || 'novo',
+    temperatura: leadData.temperatura || 'morno',
+    valor_estimado: leadData.valor_estimado || 0,
+    notas: leadData.notas || null,
+  }
+
+  const { data, error } = await supabase
+    .from('leads')
+    .insert([payload])
+    .select()
+    .single()
+
+  if (error) throw error
+  return data
+}
+
 export async function assignLeadTag(leadId: string, tagId: string): Promise<void> {
   const supabase = createClient()
   const { error } = await supabase

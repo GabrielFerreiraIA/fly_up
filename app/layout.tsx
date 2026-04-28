@@ -1,19 +1,23 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from "next";
+import "./globals.css";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: 'FlyUp CRM',
-  description: 'Sistema de gestão de leads — FlyUp Paraquedismo',
-}
+  title: "Fly Up Elite Skydiving",
+  description: "Viva a experiência mais intensa da sua vida com segurança absoluta.",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="pt-BR">
-      <body>{children}</body>
+    <html lang="pt-BR" className="dark scroll-smooth" suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        {children}
+        <WhatsAppButton />
+      </body>
     </html>
-  )
+  );
 }

@@ -9,7 +9,27 @@
       "WebFetch(domain:github.com)",
       "Bash(printenv)",
       "Bash(curl -sv --connect-timeout 3 http://localhost:5678/api/v1/workflows)",
-      "Bash(# Check if there''s N8N cloud URL or any other N8N-related config grep -r \"\"n8n\"\" \"\"C:/Users/gabri/.gemini/antigravity/scratch/FLYUP FINAL\"\" --include=\"\"*.env*\"\" --include=\"\"*.json\"\" --include=\"\"*.yaml\"\" --include=\"\"*.yml\"\" --include=\"\"*.md\"\" -l)"
+      "Bash(# Check if there''s N8N cloud URL or any other N8N-related config grep -r \"\"n8n\"\" \"\"C:/Users/gabri/.gemini/antigravity/scratch/FLYUP FINAL\"\" --include=\"\"*.env*\"\" --include=\"\"*.json\"\" --include=\"\"*.yaml\"\" --include=\"\"*.yml\"\" --include=\"\"*.md\"\" -l)",
+      "Bash(npx tsc:*)",
+      "Bash(cd:*)",
+      "Bash(ls \"app/\\(marketing\\)/\")",
+      "Bash(cp \"flyup/src/app/layout.tsx\" \"app/\")",
+      "Bash(cp \"flyup/src/app/globals.css\" \"app/\")",
+      "Bash(mkdir -p \"app/\\(auth\\)/login\")",
+      "Bash(cp \"flyup/src/app/\\(crm\\)/crm/login/page.tsx\" \"app/\\(auth\\)/login/\")",
+      "Bash(ls \"flyup/src/app/\\(crm\\)/crm/\\(app\\)/\")",
+      "Bash(cp -r \"flyup/src/app/\\(crm\\)/crm/\\(app\\)/dashboard\" \"app/\\(crm\\)/\")",
+      "Bash(cp -r \"flyup/src/app/\\(crm\\)/crm/\\(app\\)/pipeline\" \"app/\\(crm\\)/\")",
+      "Bash(cp -r \"flyup/src/app/\\(crm\\)/crm/\\(app\\)/leads\" \"app/\\(crm\\)/\")",
+      "Bash(cp -r \"flyup/src/app/\\(crm\\)/crm/\\(app\\)/config\" \"app/\\(crm\\)/\")",
+      "Bash(rm -rf .next)",
+      "Bash(rm -rf node_modules)",
+      "Bash(rm -f package-lock.json)",
+      "WebSearch",
+      "Bash(find C:Usersgabri.claude -name *.json -exec grep -li \"buddy\\\\|companion\\\\|pet\\\\|Pixelpuff\" {})",
+      "Bash(2)",
+      "Bash(find C:Usersgabri.claude -name *.yaml -o -name *.yml -o -name *.toml)",
+      "Bash(find C:UsersgabriAppDataRoamingnpmnode_modules@gitlawbopenclaude -name *.js -o -name *.ts -o -name *.json)"
     ]
   }
 }

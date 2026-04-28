@@ -9,7 +9,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sport: ['"Barlow Condensed"', 'sans-serif'],
+      },
       colors: {
+        flyup: {
+          green: '#3CFF00',
+          dark: '#0B0E11',
+          card: '#14181C',
+        },
         // FlyUp CRM Design Tokens
         sky: {
           900: '#0C1B2E',

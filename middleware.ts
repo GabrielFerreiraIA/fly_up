@@ -31,16 +31,28 @@ export async function middleware(request: NextRequest) {
   }
 
   // Rotas protegidas — redirecionar para login se não autenticado
-  const isPublicRoute = pathname.startsWith('/login')
+  // Rotas públicas: marketing + login + api webhooks
+  const isPublicRoute =
+    pathname === '/' ||
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/blog') ||
+    pathname.startsWith('/curso') ||
+    pathname.startsWith('/salto') ||
+    pathname.startsWith('/wingsuit') ||
+    pathname.startsWith('/tunel') ||
+    pathname.startsWith('/faq') ||
+    pathname.startsWith('/agenda') ||
+    pathname.startsWith('/api/')
 
   if (!user && !isPublicRoute) {
+    // CRM protegido — redirecionar para login
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // Redirecionar para dashboard se já logado tentando acessar /login
-  if (user && isPublicRoute) {
+  // Usuário logado tentando acessar login → dashboard
+  if (user && pathname === '/login') {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)

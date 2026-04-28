@@ -22,32 +22,33 @@ export function DashboardCharts({ byExperience, byFonte, byDay }: DashboardChart
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* Leads por experiência */}
-      <div className="bg-sky-800 border border-sky-700 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-sky-400 uppercase tracking-wider mb-4">
+      <div className="bg-surface border border-white/10 rounded-2xl p-6 shadow-xl">
+        <h2 className="text-[10px] font-black text-neon uppercase tracking-[0.2em] mb-6">
           📊 Leads por Experiência
         </h2>
         <ResponsiveContainer width="100%" height={200}>
           <BarChart data={byExperience.slice(0, 6)} layout="vertical">
-            <XAxis type="number" tick={{ fill: '#8BB3D8', fontSize: 11 }} />
+            <XAxis type="number" tick={{ fill: '#71717a', fontSize: 10, fontWeight: 700 }} />
             <YAxis
               type="category"
               dataKey="experience_nome"
-              tick={{ fill: '#8BB3D8', fontSize: 11 }}
+              tick={{ fill: '#71717a', fontSize: 10, fontWeight: 700, textTransform: 'uppercase' }}
               width={130}
             />
             <Tooltip
-              contentStyle={{ background: '#152640', border: '1px solid #2A4F7A', borderRadius: 8 }}
-              labelStyle={{ color: '#F8FAFC' }}
-              itemStyle={{ color: '#00B4D8' }}
+              contentStyle={{ background: '#09090b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12 }}
+              labelStyle={{ color: '#fff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '10px' }}
+              itemStyle={{ color: '#39FF14', fontWeight: 900 }}
+              cursor={{ fill: 'rgba(255,255,255,0.02)' }}
             />
-            <Bar dataKey="total" fill="#00B4D8" radius={[0, 4, 4, 0]} />
+            <Bar dataKey="total" fill="#39FF14" radius={[0, 4, 4, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
       {/* Top fontes */}
-      <div className="bg-sky-800 border border-sky-700 rounded-xl p-5">
-        <h2 className="text-sm font-semibold text-sky-400 uppercase tracking-wider mb-4">
+      <div className="bg-surface border border-white/10 rounded-2xl p-6 shadow-xl">
+        <h2 className="text-[10px] font-black text-neon uppercase tracking-[0.2em] mb-6">
           🔗 Top Fontes de Captação
         </h2>
         <div className="space-y-3">
@@ -56,13 +57,13 @@ export function DashboardCharts({ byExperience, byFonte, byDay }: DashboardChart
             const pct = Math.round((item.total / max) * 100)
             return (
               <div key={i}>
-                <div className="flex justify-between text-xs text-sky-300 mb-1">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2">
                   <span className="truncate max-w-[200px]">{item.fonte_label}</span>
-                  <span className="font-semibold ml-2">{item.total}</span>
+                  <span className="font-black text-white">{item.total}</span>
                 </div>
-                <div className="h-1.5 bg-sky-700 rounded-full overflow-hidden">
+                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-accent-primary rounded-full transition-all duration-500"
+                    className="h-full bg-neon rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(57,255,20,0.5)]"
                     style={{ width: `${pct}%` }}
                   />
                 </div>
@@ -73,27 +74,28 @@ export function DashboardCharts({ byExperience, byFonte, byDay }: DashboardChart
       </div>
 
       {/* Leads por dia */}
-      <div className="bg-sky-800 border border-sky-700 rounded-xl p-5 lg:col-span-2">
-        <h2 className="text-sm font-semibold text-sky-400 uppercase tracking-wider mb-4">
+      <div className="bg-surface border border-white/10 rounded-2xl p-6 lg:col-span-2 shadow-xl">
+        <h2 className="text-[10px] font-black text-neon uppercase tracking-[0.2em] mb-6">
           📈 Leads por Dia — últimos 14 dias
         </h2>
         <ResponsiveContainer width="100%" height={180}>
           <LineChart data={dayData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1E3A5F" />
-            <XAxis dataKey="label" tick={{ fill: '#8BB3D8', fontSize: 11 }} />
-            <YAxis tick={{ fill: '#8BB3D8', fontSize: 11 }} allowDecimals={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+            <XAxis dataKey="label" tick={{ fill: '#71717a', fontSize: 10, fontWeight: 700 }} axisLine={false} tickLine={false} dy={10} />
+            <YAxis tick={{ fill: '#71717a', fontSize: 10, fontWeight: 700 }} allowDecimals={false} axisLine={false} tickLine={false} dx={-10} />
             <Tooltip
-              contentStyle={{ background: '#152640', border: '1px solid #2A4F7A', borderRadius: 8 }}
-              labelStyle={{ color: '#F8FAFC' }}
-              itemStyle={{ color: '#FF6B35' }}
+              contentStyle={{ background: '#09090b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12 }}
+              labelStyle={{ color: '#fff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '10px' }}
+              itemStyle={{ color: '#39FF14', fontWeight: 900 }}
+              cursor={{ stroke: 'rgba(57,255,20,0.2)', strokeWidth: 2 }}
             />
             <Line
               type="monotone"
               dataKey="total"
-              stroke="#FF6B35"
-              strokeWidth={2}
-              dot={{ fill: '#FF6B35', r: 4 }}
-              activeDot={{ r: 6 }}
+              stroke="#39FF14"
+              strokeWidth={3}
+              dot={{ fill: '#09090b', stroke: '#39FF14', strokeWidth: 2, r: 4 }}
+              activeDot={{ fill: '#39FF14', stroke: '#fff', strokeWidth: 2, r: 6 }}
             />
           </LineChart>
         </ResponsiveContainer>
